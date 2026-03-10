@@ -34,6 +34,7 @@ void Menu::LoadTextures(){
 }
 
 Menu::Menu(sf::RenderWindow& window) : window(window),sprite(menuT[0]),framecount(0),startText(font),exitText(font) {
+    window.setView(window.getDefaultView());
     //背景
     sf::Vector2u texSz=menuT[0].getSize();
     sf::Vector2f windowSz=window.getView().getSize();

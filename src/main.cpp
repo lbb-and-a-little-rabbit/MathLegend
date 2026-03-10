@@ -1,5 +1,6 @@
 #include "CGs.h"
 #include "Menu.h"
+#include "Game.h" 
 #include "EncryptedPak.h"
 #include <iostream>
 
@@ -39,6 +40,9 @@ int main(int argc,char ** argv){
         [&](){
             //资源加载和初始化
             Menu::LoadTextures();
+            Game::LoadTextures();
+            TileMap::LoadTextures();
+            Player::LoadTextures();
             //加载完毕后设置assetsLoaded为完成，可以终结CG线程
             assetsLoaded=true;
         }
@@ -47,7 +51,8 @@ int main(int argc,char ** argv){
     loader.join();
     /////////////////////////////////////////////////////////////
 
-    //双线程均后完成进入菜单
+    //双线程均完成后进入菜单
+MenuLabel:
     Menu menu(window);
     MenuResult result=menu.run();
 
@@ -55,7 +60,18 @@ int main(int argc,char ** argv){
         window.close();
     }
     if(result==MenuResult::StartGame){
-        
+        Game game(window);
+        GameResult gameresult=game.run();
+        switch (gameresult){
+            case GameResult::Exit:
+                window.close();
+                break;
+            case GameResult::BackToMenu:
+                goto MenuLabel;
+                break;
+            default:
+                break;
+        }
     }
     /////////////////////////////////////////////////////////////
 

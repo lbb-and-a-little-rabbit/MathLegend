@@ -10,7 +10,7 @@
 
 #include "physfs_assistant.h"
 
-enum MenuResult{
+enum class MenuResult{
     None,
     StartGame,
     Exit
