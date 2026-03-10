@@ -22,7 +22,17 @@ class Menu{
     float SwitchTime=0.06f;
     int framecount;
 
+    //Basic
     sf::RenderWindow& window;
+    static std::vector<char> fontData;
+    static std::vector<char> musicData;
+    static sf::Font font;
+    sf::Text startText;
+    sf::Text exitText;
+
+    //Shader
+    sf::Shader shader;
+    sf::RectangleShape screen;
 
     //TS
     static std::vector<sf::Texture> menuT;
@@ -31,12 +41,15 @@ class Menu{
     //友元
     friend class Game;
 
-    void processEvents(MenuResult& result);
+    void processEvents(MenuResult& result,sf::Clock& shaderclock);
+    void update();
+    void updateHover();
     void render();
 
 public:
+    sf::Music currentMusic;
+
     Menu(sf::RenderWindow& window);
     static void LoadTextures();
-    void update();
     MenuResult run();
 };

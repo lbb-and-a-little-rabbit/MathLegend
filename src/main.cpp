@@ -49,14 +49,13 @@ int main(int argc,char ** argv){
 
     //双线程均后完成进入菜单
     Menu menu(window);
-    std::cout << "menu construsted!";
     MenuResult result=menu.run();
 
     if(result==MenuResult::Exit){
         window.close();
     }
     if(result==MenuResult::StartGame){
-
+        
     }
     /////////////////////////////////////////////////////////////
 
