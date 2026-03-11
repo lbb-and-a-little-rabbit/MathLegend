@@ -82,6 +82,9 @@ void Game::render(){
 
     map.draw(window,window.getView());
     window.draw(player.sprite);
+    //test
+    window.draw(player.hitbox);
+    window.draw(player.attackBox);
 
     window.display();
 }

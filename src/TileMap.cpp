@@ -60,6 +60,37 @@ TileMap::TileMap() : tile(grassT) {
         p[i]=permutation[i];
         p[i+256]=permutation[i];
     }
+
+    for(int x=0;x<MAP_TILES;x++){
+        blocks.emplace_back((float)x*TILE_SIZE,0);
+        blocks.emplace_back((float)x*TILE_SIZE,((float)MAP_TILES-1)*TILE_SIZE);
+    }
+
+    for(int y=0;y<MAP_TILES;y++){
+        blocks.emplace_back(0,(float)y*TILE_SIZE);
+        blocks.emplace_back(((float)MAP_TILES-1)*TILE_SIZE,(float)y*TILE_SIZE);
+    }
+
+    //EASY House GENERATION NEED TO IMPROVE
+    for(int i = 0; i < 30; i++){
+        float x, y;
+
+        do{
+            x = std::abs(std::rand() % MAP_SIZE);
+            y = std::abs(std::rand() % MAP_SIZE);
+        }
+        while(
+            std::abs(x - MAP_SIZE/2.f) < 200 ||
+            std::abs(y - MAP_SIZE/2.f) < 200 ||
+            x < 1000 ||
+            y < 1000 ||
+            MAP_SIZE - x < 1000 ||
+            MAP_SIZE - y < 1000
+        );
+        House* h=new House(x,y);
+        addEntity(h);
+    }
+    /////////////////////////////////////////////////////////////
 }
 
 void TileMap::setSeed(unsigned int seed){
@@ -71,6 +102,13 @@ void TileMap::setSeed(unsigned int seed){
         p[i]=perm[i];
         p[i+256]=perm[i];
     }
+}
+
+void TileMap::addEntity(Entity* e){
+    auto pos=e->getPosition();
+    int x=(int)(pos.x/TILE_SIZE);
+    int y=(int)(pos.y/TILE_SIZE);
+    grid[x][y].push_back(e);
 }
 
 float TileMap::fade(float t) const{
@@ -133,11 +171,11 @@ void TileMap::draw(sf::RenderWindow& window,const sf::View& camera){
     sf::Vector2f center = camera.getCenter();
     sf::Vector2f size = camera.getSize();
 
-    int startX = (center.x-size.x/2)/TILE_SIZE -2;
-    int startY = (center.y-size.y/2)/TILE_SIZE -2;
+    int startX = (center.x-size.x/2)/TILE_SIZE - 300;
+    int startY = (center.y-size.y/2)/TILE_SIZE - 300;
 
-    int endX = (center.x+size.x/2)/TILE_SIZE +2;
-    int endY = (center.y+size.y/2)/TILE_SIZE +2;
+    int endX = (center.x+size.x/2)/TILE_SIZE + 300;
+    int endY = (center.y+size.y/2)/TILE_SIZE + 300;
 
     if(startX<0) startX=0;
     if(startY<0) startY=0;
@@ -158,4 +196,13 @@ void TileMap::draw(sf::RenderWindow& window,const sf::View& camera){
             window.draw(tile);
         }
     }
+
+    for(int y=startY;y<endY;y++){
+        for(int x=startX;x<endX;x++){
+            for(auto& e:grid[y][x]) e->draw(window);
+        }
+    }
+
+    for(auto &b:blocks) b.draw(window);
+    
 }

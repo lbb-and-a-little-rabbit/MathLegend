@@ -124,23 +124,25 @@ void Player::handleInput_and_update(float dt){
         setStatus(newStatus);
 
     if(status == PlayerStatus::walk){
+        sf::Vector2f move(0,0);
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
-            sprite.move({-speed*dt,0});
-            forward = Forward::LEFT;
-        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) move.y -= speed*dt;
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) move.y += speed*dt;
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) move.x -= speed*dt, forward = Forward::LEFT;
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) move.x += speed*dt, forward = Forward::RIGHT;
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)){
-            sprite.move({speed*dt,0});
-            forward = Forward::RIGHT;
-        }
+        sf::Vector2f pos = sprite.getPosition() + move;
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-            sprite.move({0,-speed*dt});
+        //边界判断
+        float half = 15.f;
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-            sprite.move({0,speed*dt});
+        if(pos.x < TILE_SIZE+half) pos.x = TILE_SIZE+half;
+        if(pos.y < TILE_SIZE+half) pos.y = TILE_SIZE+half;
 
+        if(pos.x > MAP_SIZE-TILE_SIZE-half) pos.x = MAP_SIZE-TILE_SIZE-half;
+        if(pos.y > MAP_SIZE-TILE_SIZE-half) pos.y = MAP_SIZE-TILE_SIZE-half;
+
+        sprite.setPosition(pos);
     }
 
     if(forward == Forward::LEFT)

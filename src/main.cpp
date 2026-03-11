@@ -41,7 +41,9 @@ int main(int argc,char ** argv){
             //资源加载和初始化
             Menu::LoadTextures();
             Game::LoadTextures();
+            House::LoadTextures();
             TileMap::LoadTextures();
+            Block::LoadTextures();
             Player::LoadTextures();
             //加载完毕后设置assetsLoaded为完成，可以终结CG线程
             assetsLoaded=true;

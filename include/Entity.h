@@ -1,0 +1,37 @@
+#pragma once
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
+class Entity{
+
+protected:
+
+    sf::Sprite sprite;
+
+public:
+    Entity(const sf::Texture& tex) : sprite(tex) {}
+
+    virtual ~Entity() = default;
+
+    virtual void update(float dt){}
+
+    virtual void draw(sf::RenderWindow& window){
+
+        window.draw(sprite);
+
+    }
+
+    sf::Vector2f getPosition() const{
+
+        return sprite.getPosition();
+
+    }
+
+    sf::FloatRect getBounds() const{
+
+        return sprite.getGlobalBounds();
+
+    }
+
+};

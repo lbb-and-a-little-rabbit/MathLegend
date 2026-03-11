@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <iostream>
 
+#include "TileMap.h"
 #include "Animation.h"
 #include "physfs_assistant.h"
 

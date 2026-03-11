@@ -11,6 +11,8 @@
 #include <iostream>
 
 #include "physfs_assistant.h"
+#include "Block.h"
+#include "House.h"
 
 const int TILE_SIZE = 64;
 const int MAP_TILES = 100;
@@ -35,6 +37,8 @@ public:
 
     void setSeed(unsigned int seed);
 
+    void addEntity(Entity* e);
+
     void static LoadTextures();
 
 private:
@@ -53,6 +57,10 @@ private:
     static sf::Texture stoneT;
 
     sf::Sprite tile;
+
+    //地图上元素
+    std::vector<Block> blocks;
+    std::vector<Entity*> grid[MAP_TILES][MAP_TILES];
 
     int p[512]; // permutation table
 
