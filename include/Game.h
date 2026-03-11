@@ -4,6 +4,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
 
+#include "Cursor.h"
 #include "TileMap.h"
 #include "Player.h" 
 
@@ -17,6 +18,7 @@ enum class GameResult{
 class Game{
     //Basic
     sf::RenderWindow& window;
+    Cursor& cursor;
     TileMap map;
     sf::Clock delta;
 
@@ -38,7 +40,7 @@ class Game{
     void render();
 
 public:
-    Game(sf::RenderWindow &window);
+    Game(sf::RenderWindow &window,Cursor &Cursor);
     static void LoadTextures();
     GameResult run();
 };

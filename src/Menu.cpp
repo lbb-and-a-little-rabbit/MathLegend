@@ -33,7 +33,7 @@ void Menu::LoadTextures(){
     musicData=LoadFile("assets/Music/menubgm.wav");
 }
 
-Menu::Menu(sf::RenderWindow& window) : window(window),sprite(menuT[0]),framecount(0),startText(font),exitText(font) {
+Menu::Menu(sf::RenderWindow& window,Cursor& cursor) : window(window),cursor(cursor),sprite(menuT[0]),framecount(0),startText(font),exitText(font) {
     window.setView(window.getDefaultView());
     //背景
     sf::Vector2u texSz=menuT[0].getSize();
@@ -123,7 +123,7 @@ void Menu::processEvents(MenuResult& result,sf::Clock& shaderclock){
         ////////////////////////////////////////////////
 
         //其他事件
-
+        cursor.update(window);
         ////////////////////////////////////////////////
     }
     ////////////////////////////////////////////////
@@ -165,6 +165,7 @@ void Menu::render(){
     window.draw(startText);
     window.draw(exitText);
     window.draw(screen,&shader);
+    window.draw(cursor.sprite);
 
     window.display();
 }

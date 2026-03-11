@@ -8,7 +8,7 @@ void Game::LoadTextures(){
     bgmData=LoadFile("assets/Music/mainbgm.wav");
 }
 
-Game::Game(sf::RenderWindow &window) : window(window){
+Game::Game(sf::RenderWindow &window,Cursor& cursor) : window(window),cursor(cursor){
     //Camera
     camera=window.getDefaultView();
     window.setView(camera);
@@ -64,7 +64,8 @@ void Game::processEvents(GameResult &result){
             }
         }
         /////////////////////////////////////////
-
+        //其他事件
+        cursor.update(window);
     }
 }
 
@@ -90,6 +91,8 @@ void Game::render(){
     //test
     window.draw(player.hitbox);
     window.draw(player.attackBox);
+
+    window.draw(cursor.sprite);
 
     window.display();
 }

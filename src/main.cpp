@@ -18,6 +18,7 @@ int main(int argc,char ** argv){
 
     //窗口初始化
     sf::RenderWindow window(sf::VideoMode({1920,1200}),"MathLegend");
+    window.setMouseCursorVisible(false);
     sf::View view(sf::FloatRect({0.f,0.f},{(float)window.getSize().x,(float)window.getSize().y}));
     window.setView(view);
 
@@ -39,6 +40,7 @@ int main(int argc,char ** argv){
     std::thread loader(
         [&](){
             //资源加载和初始化
+            Cursor::LoadTextures();
             Menu::LoadTextures();
             Game::LoadTextures();
             House::LoadTextures();
@@ -55,15 +57,17 @@ int main(int argc,char ** argv){
     /////////////////////////////////////////////////////////////
 
     //双线程均完成后进入菜单
+    //初始化鼠标光标
+    Cursor cursor;
 MenuLabel:
-    Menu menu(window);
+    Menu menu(window,cursor);
     MenuResult result=menu.run();
 
     if(result==MenuResult::Exit){
         window.close();
     }
     if(result==MenuResult::StartGame){
-        Game game(window);
+        Game game(window,cursor);
         GameResult gameresult=game.run();
         switch (gameresult){
             case GameResult::Exit:

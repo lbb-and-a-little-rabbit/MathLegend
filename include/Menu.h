@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "physfs_assistant.h"
+#include "Cursor.h"
 
 enum class MenuResult{
     None,
@@ -23,6 +24,7 @@ class Menu{
 
     //Basic
     sf::RenderWindow& window;
+    Cursor& cursor;
     static std::vector<char> fontData;
     static std::vector<char> musicData;
     static sf::Font font;
@@ -48,7 +50,7 @@ class Menu{
 public:
     sf::Music currentMusic;
 
-    Menu(sf::RenderWindow& window);
+    Menu(sf::RenderWindow& window,Cursor& cursor);
     static void LoadTextures();
     MenuResult run();
 };
