@@ -42,6 +42,7 @@ int main(int argc,char ** argv){
             Menu::LoadTextures();
             Game::LoadTextures();
             House::LoadTextures();
+            Tree::LoadTextures();
             TileMap::LoadTextures();
             Block::LoadTextures();
             Player::LoadTextures();

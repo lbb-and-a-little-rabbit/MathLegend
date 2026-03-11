@@ -11,8 +11,12 @@
 #include <iostream>
 
 #include "physfs_assistant.h"
+
 #include "Block.h"
+
 #include "House.h"
+#include "Tree.h"
+
 #include "Player.h"
 
 class Player;

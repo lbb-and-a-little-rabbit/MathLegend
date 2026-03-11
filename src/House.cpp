@@ -9,7 +9,7 @@ void House::LoadTextures(){
             auto data=LoadFile(path);
             sf::Texture tex;
             if(!tex.loadFromMemory(data.data(),data.size())){
-                std::cerr << "Failed to load tree texture!\n";
+                std::cerr << "Failed to load house texture!\n";
                 exit(-1);
             }
             houseTs.emplace_back(std::move(tex));
@@ -31,7 +31,7 @@ House::House(float x,float y): Entity(houseTs[0]) {
     hitbox.setOrigin({60.f,80.f});
     hitbox.setPosition({x-20.f,y-10.f});
     hitbox.setFillColor(sf::Color::Transparent);
-    hitbox.setOutlineColor(sf::Color::Blue);
+    hitbox.setOutlineColor(sf::Color::Green);
     hitbox.setOutlineThickness(2.f);
 
 }

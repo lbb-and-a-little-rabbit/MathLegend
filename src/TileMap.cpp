@@ -71,7 +71,7 @@ TileMap::TileMap() : tile(grassT) {
         blocks.emplace_back(((float)MAP_TILES-1)*TILE_SIZE,(float)y*TILE_SIZE);
     }
 
-    //EASY House GENERATION NEED TO IMPROVE
+    //EASY House,Tree GENERATION NEED TO IMPROVE
     for(int i = 0; i < 30; i++){
         float x, y;
 
@@ -89,6 +89,25 @@ TileMap::TileMap() : tile(grassT) {
         );
         House* h=new House(x,y);
         addEntity(h);
+    }
+
+    for(int i = 0; i < 30; i++){
+        float x, y;
+
+        do{
+            x = std::abs(std::rand() % MAP_SIZE);
+            y = std::abs(std::rand() % MAP_SIZE);
+        }
+        while(
+            std::abs(x - MAP_SIZE/2.f) < 200 ||
+            std::abs(y - MAP_SIZE/2.f) < 200 ||
+            x < 1000 ||
+            y < 1000 ||
+            MAP_SIZE - x < 1000 ||
+            MAP_SIZE - y < 1000
+        );
+        Tree* t=new Tree(x,y);
+        addEntity(t);
     }
     /////////////////////////////////////////////////////////////
 }
@@ -125,6 +144,10 @@ void TileMap::handleCollisions(Player &player,sf::Vector2f oldpos){
             for(auto &e:grid[y][x]){
                 if(player.hitbox.getGlobalBounds().findIntersection(e->getHitbox().getGlobalBounds())){
                     if(dynamic_cast<House*>(e)){
+                        player.sprite.setPosition(oldpos);
+                        return;
+                    }
+                    if(dynamic_cast<Tree*>(e)){
                         player.sprite.setPosition(oldpos);
                         return;
                     }
@@ -222,7 +245,10 @@ void TileMap::draw(sf::RenderWindow& window,const sf::View& camera){
 
     for(int y=startY;y<endY;y++){
         for(int x=startX;x<endX;x++){
-            for(auto& e:grid[y][x]) e->draw(window);
+            for(auto& e:grid[y][x]){
+                e->update();
+                e->draw(window);
+            }
         }
     }
 

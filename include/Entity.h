@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "Animation.h"
 
 class Entity{
 
@@ -15,7 +16,7 @@ public:
 
     virtual ~Entity() = default;
 
-    virtual void update(float dt){}
+    virtual void update(){}
 
     virtual void draw(sf::RenderWindow& window){
 
