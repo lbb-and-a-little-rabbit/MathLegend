@@ -108,7 +108,30 @@ void TileMap::addEntity(Entity* e){
     auto pos=e->getPosition();
     int x=(int)(pos.x/TILE_SIZE);
     int y=(int)(pos.y/TILE_SIZE);
-    grid[x][y].push_back(e);
+    grid[y][x].push_back(e);
+}
+
+void TileMap::handleCollisions(Player &player,sf::Vector2f oldpos){
+    auto pos = player.sprite.getPosition();
+    int cx = (int)(pos.x / TILE_SIZE);
+    int cy = (int)(pos.y / TILE_SIZE);
+
+    for(int y = cy-5; y <= cy+5; y++){
+        for(int x = cx-5; x <= cx+5; x++){
+
+            if(x < 0 || y < 0 || x >= MAP_TILES || y >= MAP_TILES)
+                continue;
+
+            for(auto &e:grid[y][x]){
+                if(player.hitbox.getGlobalBounds().findIntersection(e->getHitbox().getGlobalBounds())){
+                    if(dynamic_cast<House*>(e)){
+                        player.sprite.setPosition(oldpos);
+                        return;
+                    }
+                }
+            }
+        }
+    }
 }
 
 float TileMap::fade(float t) const{

@@ -33,9 +33,14 @@ House::House(float x,float y): Entity(houseTs[0]) {
     hitbox.setFillColor(sf::Color::Transparent);
     hitbox.setOutlineColor(sf::Color::Blue);
     hitbox.setOutlineThickness(2.f);
+
 }
 
 void House::draw(sf::RenderWindow &window){
     window.draw(sprite);
     window.draw(hitbox);
+}
+
+sf::RectangleShape& House::getHitbox(){
+    return this->hitbox;
 }

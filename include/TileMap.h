@@ -13,6 +13,9 @@
 #include "physfs_assistant.h"
 #include "Block.h"
 #include "House.h"
+#include "Player.h"
+
+class Player;
 
 const int TILE_SIZE = 64;
 const int MAP_TILES = 100;
@@ -38,6 +41,8 @@ public:
     void setSeed(unsigned int seed);
 
     void addEntity(Entity* e);
+
+    void handleCollisions(Player& player,sf::Vector2f oldpos);
 
     void static LoadTextures();
 

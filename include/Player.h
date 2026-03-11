@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <vector>
@@ -54,7 +56,7 @@ public:
     Player();
     void setStatus(PlayerStatus s);
     void damage();
-    void handleInput_and_update(float dt);
+    sf::Vector2f handleInput_and_update(float dt);
     bool attackHit(const sf::RectangleShape& enemyBox);
 
     static void LoadTextures();

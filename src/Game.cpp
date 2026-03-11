@@ -48,7 +48,6 @@ GameResult Game::run(){
 }
 
 void Game::processEvents(GameResult &result){
-    float dt=delta.restart().asSeconds();
     while(auto event=window.pollEvent()){
         //关闭事件
         if(event->is<sf::Event::Closed>()){
@@ -67,11 +66,17 @@ void Game::processEvents(GameResult &result){
         /////////////////////////////////////////
 
     }
-    //玩家状态处理更新
-    player.handleInput_and_update(dt);
 }
 
 void Game::update(){
+    //玩家状态处理更新
+    float dt=delta.restart().asSeconds();
+    sf::Vector2f oldpos=player.handleInput_and_update(dt);
+
+    //碰撞检测
+    map.handleCollisions(player,oldpos);
+
+    //摄像头跟随玩家
     camera.setCenter(player.sprite.getPosition());
 }
 

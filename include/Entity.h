@@ -8,6 +8,7 @@ class Entity{
 protected:
 
     sf::Sprite sprite;
+    sf::RectangleShape errorbox;
 
 public:
     Entity(const sf::Texture& tex) : sprite(tex) {}
@@ -20,6 +21,11 @@ public:
 
         window.draw(sprite);
 
+    }
+
+    virtual sf::RectangleShape& getHitbox(){
+        std::cerr << "NO hitbox!\n";
+        return errorbox;
     }
 
     sf::Vector2f getPosition() const{

@@ -93,8 +93,10 @@ void Player::damage(){
     else setStatus(PlayerStatus::hurt);
 }
 
-void Player::handleInput_and_update(float dt){
-    if(dead) return;
+sf::Vector2f Player::handleInput_and_update(float dt){
+    sf::Vector2f oldpos=sprite.getPosition();
+
+    if(dead) return oldpos;
 
     if(inVincible){
         if(invclock.getElapsedTime().asSeconds() > 0.8f)
@@ -170,6 +172,8 @@ void Player::handleInput_and_update(float dt){
         attackBox.setPosition({pos.x + 30,pos.y});
     else
         attackBox.setPosition({pos.x - 30,pos.y});
+
+    return oldpos;
 }
 
 bool Player::attackHit(const sf::RectangleShape& enemyBox){

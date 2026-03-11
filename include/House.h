@@ -14,12 +14,13 @@ class House : public Entity{
     int type=0;
 
     static std::vector<sf::Texture> houseTs;
-    
-    void draw(sf::RenderWindow& window) override;
 public:
     //碰撞箱
     sf::RectangleShape hitbox;
 
     House(float x,float y);
+
+    void draw(sf::RenderWindow& window) override;
+    sf::RectangleShape& getHitbox() override;
     static void LoadTextures();
 };
