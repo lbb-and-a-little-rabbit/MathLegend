@@ -30,6 +30,9 @@ file(GLOB_RECURSE MathLegend_SOURCES
 # ===== 核心库 =====
 add_library(MathLegendCore ${MathLegend_SOURCES})
 
+# ===== tmxlite =====
+target_include_directories(MathLegendCore PUBLIC "D:/tmxlite/tmxlite/include")
+
 target_include_directories(MathLegendCore PUBLIC include)
 
 target_link_libraries(MathLegendCore
@@ -38,6 +41,7 @@ target_link_libraries(MathLegendCore
         SFML::Window
         SFML::System
         SFML::Audio
+        "D:/tmxlite/tmxlite/build/libtmxlite.dll.a"
 )
 
 # 链接 PhysFS
@@ -53,4 +57,10 @@ add_custom_target(copy_assets ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${PROJECT_SOURCE_DIR}/assets
         $<TARGET_FILE_DIR:MathLegend>/assets
+)
+
+add_custom_command(TARGET MathLegend POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "D:/tmxlite/tmxlite/build/libtmxlite.dll"
+        $<TARGET_FILE_DIR:MathLegend>
 )

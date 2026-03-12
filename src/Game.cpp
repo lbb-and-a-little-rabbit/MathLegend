@@ -1,9 +1,7 @@
 #include "Game.h"
 
-std::vector<char> Game::bgmData;
-
 void Game::LoadTextures(){
-    bgmData=LoadFile("assets/Music/mainbgm.wav");
+    
 }
 
 Game::Game(sf::RenderWindow &window,Cursor& cursor) : window(window),cursor(cursor){
@@ -12,7 +10,7 @@ Game::Game(sf::RenderWindow &window,Cursor& cursor) : window(window),cursor(curs
     window.setView(camera);
     
     //Music
-    if(!music.openFromMemory(bgmData.data(),bgmData.size())){
+    if(!music.openFromMemory(GameMusicData0.data(),GameMusicData0.size())){
         std::cerr << "Failed to load music\n";
         exit(-1);
     }
@@ -22,13 +20,13 @@ Game::Game(sf::RenderWindow &window,Cursor& cursor) : window(window),cursor(curs
     }
 
     //Text
-    if(!uiFont.openFromMemory(FontData1.data(),FontData1.size())){
+    if(!uiFont.openFromMemory(FontData0.data(),FontData0.size())){
         std::cerr << "Font load failed\n";
         exit(-1);
     }
 
     //Room
-    changeRoom(std::make_unique<TrainingRoom>());
+    changeRoom(std::make_unique<ConfirmedRoom>("Tiled/desert.tmx"));
 }
 
 StatusAssemble Game::run(){

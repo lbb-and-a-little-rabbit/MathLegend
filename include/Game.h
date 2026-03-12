@@ -7,6 +7,7 @@
 #include "Status.h"
 #include "Cursor.h"
 #include "TrainingRoom.h"
+#include "ConfirmedRoom.h"
 
 class Game : public Status {
     //Basic
@@ -18,7 +19,6 @@ class Game : public Status {
     std::unique_ptr<Room> currentRoom;
 
     //Music
-    static std::vector<char> bgmData;
     sf::Music music;
 
     //Text

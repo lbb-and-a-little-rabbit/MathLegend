@@ -4,8 +4,13 @@
 #include <SFML/Audio.hpp>
 #include "physfs_assistant.h"
 
-inline std::vector<char> FontData1;
+inline std::vector<char> FontData0;
+inline std::vector<char> MenuMusicData0;
+inline std::vector<char> GameMusicData0;
 
 inline void InitPublicResources(){
-    FontData1=LoadFile("assets/Font/uifont.ttf");
+    FontData0=LoadFile("assets/Font/uifont.ttf");
+    
+    MenuMusicData0=LoadFile("assets/Music/menubgm.wav");
+    GameMusicData0=LoadFile("assets/Music/mainbgm.wav");
 }

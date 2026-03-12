@@ -20,7 +20,6 @@ class Menu : public Status {
     //Basic
     sf::RenderWindow& window;
     Cursor& cursor;
-    static std::vector<char> musicData;
     static sf::Font font;
     sf::Text startText;
     sf::Text exitText;

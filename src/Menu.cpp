@@ -1,7 +1,6 @@
 #include "Menu.h"
 
 std::vector<sf::Texture> Menu::menuT;
-std::vector<char> Menu::musicData;
 sf::Font Menu::font;
 
 void Menu::LoadTextures(){
@@ -23,12 +22,10 @@ void Menu::LoadTextures(){
         }
     }
 
-    if(!font.openFromMemory(FontData1.data(),FontData1.size())){
+    if(!font.openFromMemory(FontData0.data(),FontData0.size())){
         std::cerr << "Failed to load font!";
         exit(-1);
     }
-
-    musicData=LoadFile("assets/Music/menubgm.wav");
 }
 
 Menu::Menu(sf::RenderWindow& window,Cursor& cursor) : window(window),cursor(cursor),sprite(menuT[0]),framecount(0),startText(font),exitText(font) {
@@ -54,7 +51,7 @@ Menu::Menu(sf::RenderWindow& window,Cursor& cursor) : window(window),cursor(curs
     exitText.setPosition({wx/2.f, wy/2.f+80});
 
     // 菜单音乐
-    if(currentMusic.openFromMemory(musicData.data(),musicData.size())){
+    if(currentMusic.openFromMemory(MenuMusicData0.data(),MenuMusicData0.size())){
         currentMusic.setLooping(true);
         currentMusic.play();
     }
