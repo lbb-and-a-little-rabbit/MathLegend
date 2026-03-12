@@ -3,8 +3,7 @@
 #include <vector>
 
 // ===== 通用 XOR =====
-void xorBuffer(std::vector<char>& data, unsigned char key)
-{
+void xorBuffer(std::vector<char>& data, unsigned char key){
     for (auto& b : data)
         b ^= key;
 }
@@ -12,8 +11,7 @@ void xorBuffer(std::vector<char>& data, unsigned char key)
 // ===== 加密任意文件 =====
 bool encryptFile(const std::string& input,
                  const std::string& output,
-                 unsigned char key)
-{
+                 unsigned char key){
     std::ifstream in(input, std::ios::binary);
     if (!in.is_open()) {
         std::cout << "Cannot open " << input << "\n";

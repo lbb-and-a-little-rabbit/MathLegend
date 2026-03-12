@@ -7,16 +7,11 @@
 #include <iomanip>
 #include <iostream>
 
+#include "Status.h"
 #include "physfs_assistant.h"
 #include "Cursor.h"
 
-enum class MenuResult{
-    None,
-    StartGame,
-    Exit
-};
-
-class Menu{
+class Menu : public Status {
     //Time
     sf::Clock clock;
     float SwitchTime=0.06f;
@@ -25,7 +20,6 @@ class Menu{
     //Basic
     sf::RenderWindow& window;
     Cursor& cursor;
-    static std::vector<char> fontData;
     static std::vector<char> musicData;
     static sf::Font font;
     sf::Text startText;
@@ -42,7 +36,7 @@ class Menu{
     //友元
     friend class Game;
 
-    void processEvents(MenuResult& result,sf::Clock& shaderclock);
+    void processEvents(StatusAssemble& result,sf::Clock& shaderclock);
     void update();
     void updateHover();
     void render();
@@ -52,5 +46,5 @@ public:
 
     Menu(sf::RenderWindow& window,Cursor& cursor);
     static void LoadTextures();
-    MenuResult run();
+    StatusAssemble run() override;
 };

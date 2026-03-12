@@ -1,7 +1,6 @@
 #include "Menu.h"
 
 std::vector<sf::Texture> Menu::menuT;
-std::vector<char> Menu::fontData;
 std::vector<char> Menu::musicData;
 sf::Font Menu::font;
 
@@ -24,8 +23,7 @@ void Menu::LoadTextures(){
         }
     }
 
-    fontData=LoadFile("assets/Font/uifont.ttf");
-    if(!font.openFromMemory(fontData.data(),fontData.size())){
+    if(!font.openFromMemory(FontData1.data(),FontData1.size())){
         std::cerr << "Failed to load font!";
         exit(-1);
     }
@@ -78,11 +76,11 @@ Menu::Menu(sf::RenderWindow& window,Cursor& cursor) : window(window),cursor(curs
     clock.start();
 }
 
-MenuResult Menu::run(){
-    MenuResult result=MenuResult::None;
+StatusAssemble Menu::run(){
+    StatusAssemble result=StatusAssemble::None;
 
     sf::Clock shaderclock;
-    while(window.isOpen() && result==MenuResult::None){
+    while(window.isOpen() && result==StatusAssemble::None){
         processEvents(result,shaderclock);
         update();
         updateHover();
@@ -92,12 +90,12 @@ MenuResult Menu::run(){
     return result;
 }
 
-void Menu::processEvents(MenuResult& result,sf::Clock& shaderclock){
+void Menu::processEvents(StatusAssemble& result,sf::Clock& shaderclock){
     //事件处理
     while(auto event=window.pollEvent()){
         //关闭窗口
         if(event->is<sf::Event::Closed>()){
-            result=MenuResult::Exit;
+            result=StatusAssemble::Exit;
             return;
         }
         ////////////////////////////////////////////////
@@ -110,12 +108,12 @@ void Menu::processEvents(MenuResult& result,sf::Clock& shaderclock){
 
                 // 检查是否点击了 Start Exit 文本
                 if(startText.getGlobalBounds().contains(mousePos)){
-                    result = MenuResult::StartGame;
+                    result = StatusAssemble::toGame;
                     currentMusic.stop();
                     return; // 点击后立即返回
                 }
                 if(exitText.getGlobalBounds().contains(mousePos)){
-                    result = MenuResult::Exit;
+                    result = StatusAssemble::Exit;
                     return;
                 }
             }

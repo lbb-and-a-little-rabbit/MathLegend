@@ -1,7 +1,8 @@
 #include "CGs.h"
-#include "Menu.h"
-#include "Game.h" 
+#include "StatusMachine.h"
 #include "EncryptedPak.h"
+#include "Game.h"
+#include "Menu.h"
 #include <iostream>
 
 int main(int argc,char ** argv){
@@ -40,6 +41,7 @@ int main(int argc,char ** argv){
     std::thread loader(
         [&](){
             //资源加载和初始化
+            InitPublicResources();
             Cursor::LoadTextures();
             Menu::LoadTextures();
             Game::LoadTextures();
@@ -56,30 +58,33 @@ int main(int argc,char ** argv){
     loader.join();
     /////////////////////////////////////////////////////////////
 
-    //双线程均完成后进入菜单
     //初始化鼠标光标
     Cursor cursor;
-MenuLabel:
-    Menu menu(window,cursor);
-    MenuResult result=menu.run();
 
-    if(result==MenuResult::Exit){
-        window.close();
-    }
-    if(result==MenuResult::StartGame){
-        Game game(window,cursor);
-        GameResult gameresult=game.run();
-        switch (gameresult){
-            case GameResult::Exit:
-                window.close();
+    //双线程均完成后初始化游戏流程状态机，开始进入菜单
+    StatusMachine machine;
+    machine.changeState(std::make_unique<Menu>(window,cursor));
+    /////////////////////////////////////////////////////////////
+
+    //游戏流程状态机循环
+    while(window.isOpen()){
+        auto* state=machine.get();
+        StatusAssemble result=state->run();
+        switch(result){
+            case StatusAssemble::toGame:
+                machine.changeState(std::make_unique<Game>(window,cursor));
                 break;
-            case GameResult::BackToMenu:
-                goto MenuLabel;
+            case StatusAssemble::toMenu:
+                machine.changeState(std::make_unique<Menu>(window,cursor));
+                break;
+            case StatusAssemble::Exit:
+                window.close();
                 break;
             default:
                 break;
         }
     }
+
     /////////////////////////////////////////////////////////////
 
     //Physfs关闭

@@ -1,10 +1,8 @@
 #include "Game.h"
 
-std::vector<char> Game::fontData;
 std::vector<char> Game::bgmData;
 
 void Game::LoadTextures(){
-    fontData=LoadFile("assets/Font/uifont.ttf");
     bgmData=LoadFile("assets/Music/mainbgm.wav");
 }
 
@@ -24,21 +22,20 @@ Game::Game(sf::RenderWindow &window,Cursor& cursor) : window(window),cursor(curs
     }
 
     //Text
-    if(!uiFont.openFromMemory(fontData.data(),fontData.size())){
+    if(!uiFont.openFromMemory(FontData1.data(),FontData1.size())){
         std::cerr << "Font load failed\n";
         exit(-1);
     }
 
-    //Map
-    map.setSeed(time(nullptr));
-    map.generate();
+    //Room
+    changeRoom(std::make_unique<TrainingRoom>());
 }
 
-GameResult Game::run(){
-    GameResult result=GameResult::None;
+StatusAssemble Game::run(){
+    StatusAssemble result=StatusAssemble::None;
 
     //游戏主循环
-    while(window.isOpen() && result==GameResult::None){
+    while(window.isOpen() && result==StatusAssemble::None){
         processEvents(result);
         update();
         render();
@@ -47,11 +44,11 @@ GameResult Game::run(){
     return result;
 }
 
-void Game::processEvents(GameResult &result){
+void Game::processEvents(StatusAssemble &result){
     while(auto event=window.pollEvent()){
         //关闭事件
         if(event->is<sf::Event::Closed>()){
-            result=GameResult::Exit;
+            result=StatusAssemble::Exit;
             return;
         }
         /////////////////////////////////////////
@@ -59,9 +56,15 @@ void Game::processEvents(GameResult &result){
         if(event->is<sf::Event::KeyPressed>()){
             auto key=event->getIf<sf::Event::KeyPressed>();
             if(key->code==sf::Keyboard::Key::Escape){
-                result=GameResult::BackToMenu;
+                result=StatusAssemble::toMenu;
                 return;
             }
+
+            ////切换房间测试
+            if(key->code==sf::Keyboard::Key::F1){
+                changeRoom(std::make_unique<TrainingRoom>());
+            }
+            /////////////////////////////////////////
         }
         /////////////////////////////////////////
         //其他事件
@@ -75,7 +78,7 @@ void Game::update(){
     sf::Vector2f oldpos=player.handleInput_and_update(dt);
 
     //碰撞检测
-    map.handleCollisions(player,oldpos);
+    currentRoom->handleCollisions(player,oldpos);
 
     //摄像头跟随玩家
     camera.setCenter(player.sprite.getPosition());
@@ -86,7 +89,7 @@ void Game::render(){
 
     window.setView(camera);
 
-    map.draw(window,window.getView());
+    currentRoom->draw(window);
     window.draw(player.sprite);
     //test
     window.draw(player.hitbox);
@@ -95,4 +98,12 @@ void Game::render(){
     window.draw(cursor.sprite);
 
     window.display();
+}
+
+void Game::changeRoom(std::unique_ptr<Room> newRoom){
+    currentRoom=std::move(newRoom);
+    currentRoom->load();
+    sf::Vector2f spawn=currentRoom->getSpawnPoint();
+    player.sprite.setPosition(spawn);
+    camera.setCenter(spawn);
 }
