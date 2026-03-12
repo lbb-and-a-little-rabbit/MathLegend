@@ -131,7 +131,21 @@ void TileMap::addEntity(Entity* e){
 }
 
 void TileMap::handleCollisions(Player &player,sf::Vector2f oldpos){
+    //边界判断
     auto pos = player.sprite.getPosition();
+
+    float half = 15.f;
+
+    if(pos.x < TILE_SIZE+half) pos.x = TILE_SIZE+half;
+    if(pos.y < TILE_SIZE+half) pos.y = TILE_SIZE+half;
+
+    if(pos.x > MAP_SIZE-TILE_SIZE-half) pos.x = MAP_SIZE-TILE_SIZE-half;
+    if(pos.y > MAP_SIZE-TILE_SIZE-half) pos.y = MAP_SIZE-TILE_SIZE-half;
+
+    player.sprite.setPosition(pos);
+    ////////////////////////////////////////////////////////////////
+
+    //实体碰撞
     int cx = (int)(pos.x / TILE_SIZE);
     int cy = (int)(pos.y / TILE_SIZE);
 

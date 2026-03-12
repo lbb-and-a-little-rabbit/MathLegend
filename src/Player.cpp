@@ -134,16 +134,6 @@ sf::Vector2f Player::handleInput_and_update(float dt){
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) move.x += speed*dt, forward = Forward::RIGHT;
 
         sf::Vector2f pos = sprite.getPosition() + move;
-
-        //边界判断
-        float half = 15.f;
-
-        if(pos.x < TILE_SIZE+half) pos.x = TILE_SIZE+half;
-        if(pos.y < TILE_SIZE+half) pos.y = TILE_SIZE+half;
-
-        if(pos.x > MAP_SIZE-TILE_SIZE-half) pos.x = MAP_SIZE-TILE_SIZE-half;
-        if(pos.y > MAP_SIZE-TILE_SIZE-half) pos.y = MAP_SIZE-TILE_SIZE-half;
-
         sprite.setPosition(pos);
     }
 

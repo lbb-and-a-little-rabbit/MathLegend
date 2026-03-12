@@ -26,7 +26,7 @@ Game::Game(sf::RenderWindow &window,Cursor& cursor) : window(window),cursor(curs
     }
 
     //Room
-    changeRoom(std::make_unique<ConfirmedRoom>("Tiled/desert.tmx"));
+    changeRoom(std::make_unique<ConfirmedRoom>("Tiled/test/mathlegendtest2.tmx"));
 }
 
 StatusAssemble Game::run(){
