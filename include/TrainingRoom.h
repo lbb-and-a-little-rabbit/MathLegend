@@ -21,4 +21,6 @@ public:
     sf::Vector2f getSpawnPoint() const override {
         return {MAP_SIZE/2.f,MAP_SIZE/2.f}; 
     }
+
+    void update(float dt) override {}
 };

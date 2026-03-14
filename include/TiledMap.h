@@ -6,7 +6,20 @@
 #include <tmxlite/ObjectGroup.hpp>
 #include <vector>
 
+#include "PublicResources.h"
+
 class Player;
+
+struct TileAnimation{
+    int tilesetIndex;
+    int layerIndex; 
+    int vertexIndex;
+
+    std::vector<tmx::Tileset::Tile::Animation::Frame> frames;
+
+    float timer = 0.f;
+    int currentFrame = 0;
+};
 
 class TiledMap{
 public:
@@ -25,17 +38,26 @@ public:
     sf::Vector2u getMapTileCount() const;
     sf::Vector2u getMapSize() const;
 
-private:
+    void setScale(float s); 
 
+private:
     struct RenderLayer{
         std::vector<sf::VertexArray> vertices; // 每个 tileset 一个
+    };
+
+    struct CollisionPolygon {
+        std::vector<sf::Vector2f> points;
     };
 
     tmx::Map map;
 
     std::vector<sf::Texture> tilesetTextures;
     std::vector<RenderLayer> layers;
+    std::vector<TileAnimation> animations;
+
+    std::vector<sf::FloatRect> collisionRects;
+    std::vector<CollisionPolygon> collisionPolygons;
 
     sf::Vector2f spawnPoint;
-
+    float scale=1.f;
 };

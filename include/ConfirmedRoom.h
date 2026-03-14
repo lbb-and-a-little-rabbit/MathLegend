@@ -10,10 +10,11 @@ private:
     TiledMap map;
 
     std::string tmxPath;
+    float scale;
 
 public:
 
-    ConfirmedRoom(const std::string& path);
+    ConfirmedRoom(const std::string& path,float s=1.f);
 
     void load() override;
 
@@ -22,4 +23,6 @@ public:
     void handleCollisions(Player& player,sf::Vector2f oldpos) override;
 
     sf::Vector2f getSpawnPoint() const override;
+
+    void update(float dt) override;
 };

@@ -26,7 +26,7 @@ Game::Game(sf::RenderWindow &window,Cursor& cursor) : window(window),cursor(curs
     }
 
     //Room
-    changeRoom(std::make_unique<ConfirmedRoom>("Tiled/test/mathlegendtest2.tmx"));
+    changeRoom(std::make_unique<ConfirmedRoom>("Tiled/village/village.tmx",5.f));
 }
 
 StatusAssemble Game::run(){
@@ -63,6 +63,17 @@ void Game::processEvents(StatusAssemble &result){
                 changeRoom(std::make_unique<TrainingRoom>());
             }
             /////////////////////////////////////////
+
+            ///碰撞箱显示
+            if(key->code==sf::Keyboard::Key::F2){
+                showhitbox=!showhitbox;
+            }
+            if(key->code==sf::Keyboard::Key::Num1){
+                changeRoom(std::make_unique<ConfirmedRoom>("Tiled/test2/Undead_Land.tmx",5.f));
+            }
+            if(key->code==sf::Keyboard::Key::Num2){
+                changeRoom(std::make_unique<ConfirmedRoom>("Tiled/test3/Cursed_land.tmx",5.f));
+            }
         }
         /////////////////////////////////////////
         //其他事件
@@ -74,6 +85,7 @@ void Game::update(){
     //玩家状态处理更新
     float dt=delta.restart().asSeconds();
     sf::Vector2f oldpos=player.handleInput_and_update(dt);
+    //currentRoom->update(dt);
 
     //碰撞检测
     currentRoom->handleCollisions(player,oldpos);
@@ -90,8 +102,10 @@ void Game::render(){
     currentRoom->draw(window);
     window.draw(player.sprite);
     //test
-    window.draw(player.hitbox);
-    window.draw(player.attackBox);
+    if(showhitbox){
+        window.draw(player.hitbox);
+        window.draw(player.attackBox);
+    }
 
     window.draw(cursor.sprite);
 

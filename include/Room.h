@@ -11,4 +11,5 @@ public:
     virtual void draw(sf::RenderWindow &window)=0;
     virtual void handleCollisions(Player& player,sf::Vector2f oldpos)=0;
     virtual sf::Vector2f getSpawnPoint() const=0;
+    virtual void update(float dt)=0;
 };
